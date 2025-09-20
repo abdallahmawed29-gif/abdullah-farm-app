@@ -1,1 +1,1 @@
-// placeholder service worker
+self.addEventListener('fetch', function(){ /* placeholder */ });
