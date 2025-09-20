@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Abdullah Farm App</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body{font-family: Tahoma, Arial; direction: rtl; padding:16px; background:#f8f9fa; color:#222;}
+    h1{margin-top:0;color:#165c3b;}
+    .card{background:#fff;padding:12px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-bottom:12px;}
+    label{display:block;margin-top:8px;}
+    select,input,textarea{width:100%;padding:8px;margin-top:6px;border-radius:6px;border:1px solid #ccc;box-sizing:border-box;}
+    button{background:#2e7d32;color:#fff;border:none;padding:10px 12px;border-radius:6px;cursor:pointer;margin-top:8px;}
+    #preview{max-width:100%;border-radius:6px;margin-top:8px;}
+    .small{font-size:13px;color:#555;}
+    .symp{display:inline-block;padding:6px 8px;margin:6px;border-radius:20px;background:#eef6ee;cursor:pointer;border:1px solid #cfe8cf;}
+    .symp.selected{background:#2e7d32;color:#fff;border-color:#2e7d32;}
+    .flex{display:flex;gap:8px;}
+    .col{flex:1;}
+    footer{font-size:13px;color:#666;margin-top:16px;text-align:center;}
+  </style>
+</head>
+<body>
+  <h1>تطبيق عبدالله الزراعي 👨‍🌾</h1>
+  <div class="card">
+    <strong>مرحبًا!</strong>
+    <p class="small">نسخة مبدئية متقدمة: برامج تسميد لكل محصول + رفع صورة لتشخيص مبدئي يعتمد على الأعراض، وتقارير جاهزة باسم المهندس عبدالله.</p>
+  </div>
+
+  <div class="card">
+    <label>اختر المحصول</label>
+    <select id="crop"></select>
+
+    <label>أدخل عمر النبات بالأيام</label>
+    <input type="number" id="age" placeholder="مثال: 35">
+
+    <button onclick="showProgram()">عرض برنامج التسميد</button>
+    <div id="program" class="small" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="card">
+    <h3>رفع صورة للتشخيص</h3>
+    <input type="file" accept="image/*" id="imgfile">
+    <img id="preview" style="display:none">
+
+    <div id="symptoms" style="margin-top:10px;display:none;">
+      <div class="small">اختر الأعراض الظاهرة على الصورة (ممكن تختار أكثر من واحد):</div>
+      <div id="symplist" style="margin-top:8px"></div>
+      <button onclick="diagnose()">اعرف التشخيص</button>
+    </div>
+
+    <div id="diagnosis" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="card">
+    <h3>تقرير وملاحظات المهندس</h3>
+    <label>ملاحظات إضافية (مسبقة باسم المهندس عبدالله)</label>
+    <textarea id="engnotes" rows="4">توقيع: المهندس عبدالله. — ملاحظات فنية: افحص الحقل ميدانيًا قبل اتخاذ قرار. للتواصل: +20XXXXXXXXX</textarea>
+    <div class="flex" style="margin-top:8px;">
+      <button onclick="downloadReport()">حفظ تقرير (TXT)</button>
+      <button onclick="copyReport()">نسخ التقرير للحافظة</button>
+    </div>
+    <div id="saved" class="small"></div>
+  </div>
+
+  <footer class="small">هذه نسخة MVP: التشخيص مبدئي يعتمد على اختيار الأعراض؛ لاحقًا يمكن ربطها بنموذج AI مدرب على صور حقلية.</footer>
+
+<script>
+const data = {
+  "قمح": {"stages":[{"day":15,"note":"تسميد نيتروجين N 20-30 كجم/فدان في مرحلة النمو المبكر."},{"day":60,"note":"تسميد نيتروجين 20-30 كجم/فدان قبل الإزهار."},{"day":90,"note":"تسميد فسفور وبوتاسيوم قبل التكوين."}]},
+  "ذرة": {"stages":[{"day":14,"note":"إضافة فوسفور لتعزيز الجذور."},{"day":40,"note":"تسميد نيتروجين بجرعات مقسمة."},{"day":70,"note":"بوتاسيوم قبل أكتمال الحبوب."}]},
+  "بطاطس": {"stages":[{"day":20,"note":"رشة نترات أثناء التزهير."},{"day":50,"note":"بوتاسيوم لزيادة حجم الدرنات."}]},
+  "فراولة": {"stages":[{"day":10,"note":"تسميد ورقي متوازن."},{"day":30,"note":"مراقبة الفطريات والرش الوقائي."}]},
+  "بطيخ": {"stages":[{"day":15,"note":"فوسفور للتثبيت الجذري."},{"day":45,"note":"بوتاسيوم لزيادة السكر."}]},
+  "شمام": {"stages":[{"day":15,"note":"فوسفور مبكر."},{"day":40,"note":"بوتاسيوم قبل نضج الثمار."}]},
+  "مانجو": {"stages":[{"day":30,"note":"تسميد متوازن قبل التزهير."},{"day":120,"note":"تغذية بعد الحصاد للتعافي."}]},
+  "موالح": {"stages":[{"day":30,"note":"تسميد نيتروجين متوازن بعد العقد."},{"day":90,"note":"بوتاسيوم لتحسين الجودة."}]},
+  "طماطم": {"stages":[{"day":15,"note":"تسميد فسفور في بداية الزراعة."},{"day":45,"note":"تسميد بوتاسيوم أثناء العقد."}]},
+  "فلفل": {"stages":[{"day":20,"note":"نيتروجين معتدل قبل التزهير."},{"day":50,"note":"بوتاسيوم لتحسين حجم الثمار."}]},
+  "فاصوليا خضراء": {"stages":[{"day":15,"note":"تسميد فوسفور للمساعدة على التزهير."},{"day":35,"note":"قليل من النيتروجين إن لزم."}]},
+  "فول سوداني": {"stages":[{"day":20,"note":"تسميد فسفور مبكر."},{"day":80,"note":"تحسين التهوية والتجفيف قبل الحصاد."}]}
+};
+
+const cropSelect = document.getElementById('crop');
+Object.keys(data).forEach(c=>{
+  const opt = document.createElement('option');
+  opt.value = c; opt.textContent = c;
+  cropSelect.appendChild(opt);
+});
+
+function showProgram(){
+  const crop = cropSelect.value;
+  const age = parseInt(document.getElementById('age').value || '0');
+  const programDiv = document.getElementById('program');
+  if(!data[crop]){ programDiv.innerText = 'لا يوجد برنامج لهذا المحصول بعد.'; return; }
+  let lines = 'برنامج التسميد المقترح (مبسط):\n';
+  data[crop].stages.forEach(s=>{
+    const due = age >= s.day ? 'ماضٍ أو مستحق الآن' : 'مستقبلي';
+    lines += `بعد ${s.day} يوم - ${s.note} (${due})\n`;
+  });
+  programDiv.innerText = lines;
+  programDiv.style.whiteSpace = 'pre-line';
+}
+
+const imgfile = document.getElementById('imgfile');
+const preview = document.getElementById('preview');
+const sympDiv = document.getElementById('symptoms');
+const sympList = document.getElementById('symplist');
+const diagnosisDiv = document.getElementById('diagnosis');
+
+const symptoms = [
+  "بقع بنية/مائية على الورقة",
+  "اصفرار عام للنبات (Chlorosis)",
+  "ذبول فجائي",
+  "ثقوب/أكل الحواف (آفات حشرية)",
+  "بقع غروية على الثمار (تعفن)",
+  "تجعد وتشوه الأوراق",
+  "بقع بيضاء/بودرة (فطريات)",
+  "جذور متحللة/رائحة"
+];
+
+symptoms.forEach(s=>{
+  const el = document.createElement('span');
+  el.className = 'symp';
+  el.innerText = s;
+  el.onclick = ()=> el.classList.toggle('selected');
+  sympList.appendChild(el);
+});
+
+imgfile.onchange = function(e){
+  const f = e.target.files[0];
+  if(!f) return;
+  const url = URL.createObjectURL(f);
+  preview.src = url;
+  preview.style.display = 'block';
+  sympDiv.style.display = 'block';
+  diagnosisDiv.innerHTML = '';
+}
+
+function diagnose(){
+  const selected = Array.from(document.querySelectorAll('.symp.selected')).map(s=>s.innerText);
+  if(selected.length === 0){ alert('اختار عرض أو أكثر علشان نحاول نشخص المشكلة.'); return; }
+  let result = 'تشخيص مبدئي:\n';
+  let recommendations = [];
+
+  if(selected.includes('بقع بيضاء/بودرة (فطريات)')){
+    result += '- احتمالية وجود فطريات سطحية (مثل البياض الدقيقي).\n';
+    recommendations.push('رش مبيد فطري مناسب أو محلول كبريت أو منتجات حيوية مضادة للفطريات.');
+  }
+  if(selected.includes('بقع بنية/مائية على الورقة')){
+    result += '- قد تكون بقع ناجمة عن فطريات أو بكتيريا (تعفن بكتيري/فطري).\n';
+    recommendations.push('انعزل الأماكن المصابة، ورش مبيد مناسب واتّبع تعليمات السلامة.');
+  }
+  if(selected.includes('اصفرار عام للنبات (Chlorosis)')){
+    result += '- قد يشير لنقص عناصر (نقص نيتروجين أو حديد) أو لمشكلة ري.\n';
+    recommendations.push('افحص مستوى pH والتربة، وفكر في تسميد N أو Fe حسب التحليل.');
+  }
+  if(selected.includes('ذبول فجائي')){
+    result += '- ممكن يكون ذبول جرثومي، فطري، أو نتيجة نقص مياه/جذور متضررة.\n';
+    recommendations.push('تحقق من الري والجذور واستخدم مبيدات أو حلول بيولوجية حسب الحالة.');
+  }
+  if(selected.includes('ثقوب/أكل الحواف (آفات حشرية)')){
+    result += '- وجود آفات حشرية (ديدان، حشرات قارضة).\n';
+    recommendations.push('استخدم مبيدات حشرية مستهدفة أو مصائد وخطة مكافحة متكاملة (IPM).');
+  }
+  if(selected.includes('جذور متحللة/رائحة')){
+    result += '- مشاكل جذور (نيماتودا أو تعفن جذور).\n';
+    recommendations.push('افحص التربة، وفكر في معاملات تعقيم للتربة أو مبيدات نيماتودا أو حلول حيوية.');
+  }
+
+  recommendations.push('قبل استخدام أي منتج تأكد من قراءه اللوحة الإرشادية وجرعات الاستخدام.');
+
+  diagnosisDiv.innerHTML = '<pre style="white-space:pre-line;">' + result + '\nالتوصيات:\n- ' + recommendations.join('\n- ') + '</pre>';
+
+  const crop = document.getElementById('crop').value;
+  const age = document.getElementById('age').value || 'غير محدد';
+  document.getElementById('engnotes').value = `تقرير مبدئي\nالمحصول: ${crop}\nعمر النبات: ${age} يوم\n${result.replace(/\n/g,'\n')}\nتوصيات:\n- ${recommendations.join('\n- ')}\n\nتوقيع: المهندس عبدالله. للتواصل: +20XXXXXXXXX`;
+}
+
+function downloadReport(){
+  const notes = document.getElementById('engnotes').value;
+  const crop = document.getElementById('crop').value;
+  const age = document.getElementById('age').value || 'غير محدد';
+  const now = new Date().toLocaleString('ar-EG');
+  const content = `Abdullah Farm App - تقرير ميداني\nالتاريخ: ${now}\nالمحصول: ${crop}\nعمر النبات: ${age} يوم\n\n${notes}`;
+  const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `report_${crop.replace(/\s+/g,'_')}_${Date.now()}.txt`;
+  document.body.appendChild(a); a.click();
+  a.remove();
+  document.getElementById('saved').innerText = 'تم تنزيل التقرير على جهازك.';
+}
+
+function copyReport(){
+  const notes = document.getElementById('engnotes').value;
+  navigator.clipboard.writeText(notes).then(()=>{
+    document.getElementById('saved').innerText = 'تم نسخ التقرير للحافظة.';
+  }).catch(()=>{
+    document.getElementById('saved').innerText = 'النسخ لم ينجح - افتح المتصفح المسموح.';
+  });
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
