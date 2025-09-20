@@ -1,78 +1,48 @@
 <!doctype html>
 <html lang="ar">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Abdullah Farm App — النسخة الكاملة</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="theme-color" content="#2E7D32">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Abdullah Farm App — Complete</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <main class="main">
-      <header>
-        <h1>Abdullah Farm App — النسخة الكاملة</h1>
-        <p class="lead">اختَر المحصول وأدخل عمر النبات (باليوم) لعرض برنامج التسميد والري والتشخيص المفصّل.</p>
-      </header>
-
-      <section class="controls card">
-        <label>اختر المحصول:</label>
-        <select id="cropSelect"></select>
-
+  <div class="app">
+    <header class="topbar"><div class="brand"><img src="assets/crop_wheat.png" class="logo"> Abdullah Farm App</div></header>
+    <main class="content">
+      <section class="panel select-panel">
+        <label>اختر المحصول</label>
+        <div id="cropGrid" class="crop-grid"></div>
         <div class="row">
-          <div class="col">
-            <label>عمر النبات (يوم):</label>
-            <input type="number" id="ageInput" placeholder="مثال: 20" />
-          </div>
-          <div class="col shrink">
-            <button id="showBtn" class="btn">اعرض الخطة</button>
-          </div>
+          <div class="col"><label>عمر النبات (يوم)</label><input id="ageInput" type="number" placeholder="مثال: 20"></div>
+          <div class="col shrink"><button id="showBtn" class="btn">اعرض الخطة</button></div>
         </div>
       </section>
 
-      <section id="resultArea">
-        <div id="programSection" class="card">
-          <h2>برنامج التسميد (تفصيلي)</h2>
-          <div id="programContent">اختر محصولًا وأدخل العمر ثم اضغط "اعرض الخطة".</div>
+      <section id="mainInfo" class="panel info-panel">
+        <div class="tabs">
+          <button class="tab active" data-tab="fert">التسميد</button>
+          <button class="tab" data-tab="irr">الري</button>
+          <button class="tab" data-tab="diag">التشخيص</button>
+          <button class="tab" data-tab="def">نقص العناصر</button>
         </div>
-
-        <div id="irrigationSection" class="card">
-          <h2>برنامج الري (تفصيلي)</h2>
-          <div id="irrigationContent">سيظهر هنا جدول الري حسب العمر ونوع التربة.</div>
-        </div>
-
-        <div id="diagnosisSection" class="card">
-          <h2>تشخيص أمراض (رفع صورة)</h2>
-          <p class="small">صوِّر الجزء المتأثر واضغط رفع، ثم اختَر الأعراض لعرض تشخيص مبدئي.</p>
-          <input type="file" id="imgFile" accept="image/*">
-          <img id="preview" src="" alt="" style="display:none;max-width:100%;margin-top:8px;border-radius:6px;">
-          <div id="symptomsArea" style="display:none;">
-            <div class="small">اختَر الأعراض الظاهرة:</div>
-            <div id="symptomsList" class="tags"></div>
-            <button id="diagBtn" class="btn">أجرِ التشخيص</button>
+        <div id="tabContent" class="tab-content">
+          <div id="fert" class="tab-page active">اختَر محصولًا وأدخل العمر ثم اضغط "اعرض الخطة".</div>
+          <div id="irr" class="tab-page"></div>
+          <div id="diag" class="tab-page">
+            <p class="small">ارفع صورة للجزء المتأثر ثم اختر الأعراض.</p>
+            <input id="imgFile" type="file" accept="image/*">
+            <img id="preview" src="" style="display:none;max-width:100%;border-radius:6px;margin-top:8px;">
+            <div id="symptomsArea" style="display:none"><div id="symptomsList" class="tags"></div><button id="diagBtn" class="btn">تشخيص</button></div>
+            <div id="diagnosisResult"></div>
           </div>
-          <div id="diagnosisResult" style="margin-top:10px;"></div>
+          <div id="def" class="tab-page"></div>
         </div>
-
-        <div id="deficiencySection" class="card">
-          <h2>أعراض نقص العناصر</h2>
-          <div id="deficiencyContent"></div>
-        </div>
-
       </section>
 
-      <section id="guidelines" class="card">
-        <h2>الإرشادات العامة (أسفل الصفحة)</h2>
-        <div id="guidelinesContent"></div>
-      </section>
+      <section id="guidelines" class="panel guidelines"><h3>الإرشادات العامة</h3><div id="guidelinesContent"></div></section>
 
-      <footer class="footer">
-        <div>مع تحياتي — م. عبدالله</div>
-        <div>01026355724</div>
-      </footer>
+      <footer class="footer"><div>مع تحياتي — م. عبدالله</div><div>01026355724</div></footer>
     </main>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>

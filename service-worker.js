@@ -1,1 +1,1 @@
-// service worker placeholder
+// placeholder service worker
