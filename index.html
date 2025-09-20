@@ -3,48 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Abdullah Farm App - المفصّل</title>
+  <title>Abdullah Farm App — النسخة الكاملة</title>
   <link rel="stylesheet" href="style.css">
   <meta name="theme-color" content="#2E7D32">
 </head>
 <body>
   <div class="container">
-    <aside class="sidebar">
-      <div class="brand">
-        <h2>إرشادات ومعلومات</h2>
-        <div class="contact">م. عبدالله<br>01026355724</div>
-      </div>
-
-      <section class="panel">
-        <h3>وظيفة العناصر & أعراض النقص</h3>
-        <div id="nutrients-list"></div>
-      </section>
-
-      <section class="panel">
-        <h3>إرشادات عن التربة</h3>
-        <ul>
-          <li>افحص pH: معظم المحاصيل تفضل pH بين 6.0-7.5.</li>
-          <li>التربة الرملية: تسمح بتصريف أسرع وتحتاج ري متكرر.</li>
-          <li>التربة الطينية: تحتفظ بالماء، خفف الري تجنبا لتعفن الجذور.</li>
-          <li>أضف مادة عضوية (كمبوست) مرة سنويًا لتحسين البنية.</li>
-        </ul>
-      </section>
-
-      <section class="panel">
-        <h3>نصائح عامة سريعة</h3>
-        <ol>
-          <li>اعمل تحليل تربة قبل أي برنامج تسميد.</li>
-          <li>قسّم جرعات النيتروجين واتبّع جدول الري حسب الطور.</li>
-          <li>سجّل كل تطبيق (كمية - تاريخ - موقع).</li>
-          <li>لا تخلط مبيدات مختلفة بدون توصية فنية.</li>
-        </ol>
-      </section>
-    </aside>
-
     <main class="main">
       <header>
-        <h1>Abdullah Farm App — النظام المهني</h1>
-        <p class="lead">اختر المحصول وأدخل عمر النبات (باليوم) عشان يطلعلك برنامج التسميد والري والتشخيص.</p>
+        <h1>Abdullah Farm App — النسخة الكاملة</h1>
+        <p class="lead">اختَر المحصول وأدخل عمر النبات (باليوم) لعرض برنامج التسميد والري والتشخيص المفصّل.</p>
       </header>
 
       <section class="controls card">
@@ -64,27 +32,38 @@
 
       <section id="resultArea">
         <div id="programSection" class="card">
-          <h2>برنامج المحصول</h2>
-          <div id="programContent">اختر محصول وأدخل العمر واضغط "اعرض الخطة".</div>
+          <h2>برنامج التسميد (تفصيلي)</h2>
+          <div id="programContent">اختر محصولًا وأدخل العمر ثم اضغط "اعرض الخطة".</div>
         </div>
 
         <div id="irrigationSection" class="card">
-          <h2>برنامج الري</h2>
+          <h2>برنامج الري (تفصيلي)</h2>
           <div id="irrigationContent">سيظهر هنا جدول الري حسب العمر ونوع التربة.</div>
         </div>
 
         <div id="diagnosisSection" class="card">
           <h2>تشخيص أمراض (رفع صورة)</h2>
-          <p class="small">صوّر الورقة/الثمار أو الصنف المتأثر واضغط رفع، ثم اختر الأعراض لتشخيص مبدئي.</p>
+          <p class="small">صوِّر الجزء المتأثر واضغط رفع، ثم اختَر الأعراض لعرض تشخيص مبدئي.</p>
           <input type="file" id="imgFile" accept="image/*">
           <img id="preview" src="" alt="" style="display:none;max-width:100%;margin-top:8px;border-radius:6px;">
           <div id="symptomsArea" style="display:none;">
-            <div class="small">اختار الأعراض الظاهرة:</div>
+            <div class="small">اختَر الأعراض الظاهرة:</div>
             <div id="symptomsList" class="tags"></div>
             <button id="diagBtn" class="btn">أجرِ التشخيص</button>
           </div>
           <div id="diagnosisResult" style="margin-top:10px;"></div>
         </div>
+
+        <div id="deficiencySection" class="card">
+          <h2>أعراض نقص العناصر</h2>
+          <div id="deficiencyContent"></div>
+        </div>
+
+      </section>
+
+      <section id="guidelines" class="card">
+        <h2>الإرشادات العامة (أسفل الصفحة)</h2>
+        <div id="guidelinesContent"></div>
       </section>
 
       <footer class="footer">
