@@ -1,208 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Abdullah Farm App - مكتبة التسميد والري</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    body{font-family: Tahoma, Arial, sans-serif; direction: rtl; padding:14px; background:#f7f9f7; color:#222;}
-    header{background:#165c3b;color:#fff;padding:12px;border-radius:8px;margin-bottom:12px;}
-    h1{margin:4px 0;font-size:20px;}
-    .nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-    .nav button{background:#fff;color:#165c3b;border:1px solid #cfe8cf;padding:8px;border-radius:6px;cursor:pointer;}
-    .card{background:#fff;padding:12px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);margin-bottom:12px;}
-    label{display:block;margin-top:8px;}
-    select,input,textarea{width:100%;padding:8px;margin-top:6px;border-radius:6px;border:1px solid #ccc;box-sizing:border-box;}
-    button.primary{background:#2e7d32;color:#fff;border:none;padding:10px 12px;border-radius:6px;cursor:pointer;margin-top:8px;}
-    table{width:100%;border-collapse:collapse;margin-top:8px;}
-    table th, table td{border:1px solid #e2e2e2;padding:8px;text-align:right;font-size:14px;}
-    .small{font-size:13px;color:#555;}
-    pre{white-space:pre-wrap;background:#f0f8f0;padding:10px;border-radius:6px;}
-    footer{font-size:12px;color:#666;margin-top:12px;text-align:center;}
-    .badge{display:inline-block;background:#eef6ee;color:#165c3b;padding:4px 8px;border-radius:12px;margin:4px 4px 0 0;font-size:12px;}
-  </style>
+  <meta charset="UTF-8">
+  <title>Abdullah Farm App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Abdullah Farm App — مكتبة التسميد والري والإرشاد</h1>
-    <div class="nav">
-      <button onclick="showSection('home')">الرئيسية</button>
-      <button onclick="showSection('fert')">برامج التسميد</button>
-      <button onclick="showSection('irr')">برامج الري</button>
-      <button onclick="showSection('nut')">وظيفة العناصر ونقصها</button>
-      <button onclick="showSection('tips')">نصائح وإرشادات</button>
-    </div>
+    <h1>Abdullah Farm App</h1>
+    <p>مع تحياتى: م. عبدالله - 01026355724</p>
   </header>
 
-  <div id="home" class="card section">
-    <h3>مرحبًا — إزاي تستخدم المكتبة دي</h3>
-    <p class="small">الصفحة دي تحتوي برامج تسميد مبسطة لكل محصول، برامج ري عامة، شرح وظائف العناصر الكبرى والصغرى وأعراض نقصها، ونصائح عملية مترابطة. كل الأرقام المعلنة هنا <strong>تقديرية</strong> ويجب تعديلها حسب تحليل التربة واحتياجات الحقل.</p>
-    <p class="small">لو عايز أي محصول نضيفه بتفاصيل أكبر (جرعات حسب فدان، تحاليل تربة)، ابعتهولي وأنا أضيف التفاصيل.</p>
-  </div>
+  <main>
+    <section id="intro">
+      <h2>مرحباً بك</h2>
+      <p>اختر المحصول وأدخل عمر النبات للحصول على برامج الري والتسميد والإرشادات.</p>
+      <label for="crop">اختر المحصول:</label>
+      <select id="crop"></select>
+      <label for="age">عمر النبات (بالأيام):</label>
+      <input type="number" id="age" min="1" max="365">
+      <button onclick="showProgram()">اعرض البرنامج</button>
+    </section>
 
-  <div id="fert" class="card section" style="display:none;">
-    <h3>برامج التسميد (ملخص لكل محصول)</h3>
-    <p class="small">الأسئلة الأساسية: <span class="badge">متى؟</span> <span class="badge">بأي سماد؟</span> <span class="badge">كيف؟</span></p>
+    <section id="programs" style="display:none;">
+      <h2>البرنامج</h2>
+      <div id="fertilization"></div>
+      <div id="irrigation"></div>
+    </section>
 
-    <label>اختر المحصول</label>
-    <select id="cropFert"></select>
-    <button class="primary" onclick="showFertProgram()">عرض برنامج التسميد للمحصول</button>
+    <section id="diagnosis">
+      <h2>تشخيص الأمراض</h2>
+      <input type="file" accept="image/*">
+      <p>سيتم إضافة خاصية التشخيص بالذكاء الاصطناعي هنا.</p>
+    </section>
 
-    <div id="fertProgram" style="margin-top:12px;"></div>
-  </div>
+    <section id="guidelines">
+      <h2>الإرشادات العامة</h2>
+      <ul>
+        <li>تحاليل التربة: مهمة لتحديد الاحتياجات.</li>
+        <li>وظائف العناصر: النيتروجين للنمو الخضري، الفسفور للجذور، البوتاسيوم للجودة.</li>
+        <li>نقص العناصر: اصفرار الأوراق يعني نقص نيتروجين، حواف محترقة نقص بوتاسيوم.</li>
+        <li>المنتجات العضوية: آمنة وفعالة لتحسين التربة.</li>
+      </ul>
+    </section>
+  </main>
 
-  <div id="irr" class="card section" style="display:none;">
-    <h3>برامج الري العامة</h3>
-    <p class="small">الري يتأثر بنوع التربة، الطقس، طريقة الري (تنقيط/رش/غمر)، ومرحلة النبات. النصائح التالية عامة — اضبطها حسب الحقل.</p>
-    <div id="irrigationContent"></div>
-  </div>
-
-  <div id="nut" class="card section" style="display:none;">
-    <h3>وظيفة العناصر الغذائية وأعراض نقصها</h3>
-    <div id="nutrientsContent"></div>
-  </div>
-
-  <div id="tips" class="card section" style="display:none;">
-    <h3>نصائح وإرشادات عملية</h3>
-    <ul>
-      <li>اعمل تحليل تربة قبل أي برنامج تسميد — ده أهم خطوة.</li>
-      <li>قسّم جرعات النيتروجين (N) على دفعات بدل دفعة واحدة لتقليل الفقد.</li>
-      <li>استخدم سماد عضوي (كمبوست/سماد بلدي) لتحسين بنية التربة والاحتفاظ بالمغذيات.</li>
-      <li>تابع حالة الري بعد كل تسميد — الري الخاطئ ممكن يزيد مشاكل الجذور.</li>
-      <li>للتسميد الورقي (Foliar)، لا تستخدم تركيزات عالية — اقرأ اللوحة الإرشادية.</li>
-      <li>سجل كل عملية تسميد وكمية ومكان في دفتر الحقل — هذا يسهل التحليل الموسم القادم.</li>
-    </ul>
-    <h4>أمثلة عملية سريعة</h4>
-    <pre id="quickExamples"></pre>
-  </div>
-
-  <footer>ملاحظة: المحتوى هنا إرشادي — استشر مهندس محلي أو تحاليل معملية للتوصيات الدقيقة.</footer>
-
-<script>
-// Data structure: fertilization programs (simplified, product names + timing + notes)
-const fertData = {
-  "قمح": {
-    "summary": "قمح: برنامج متوازن للزيادة في المحصول والجودة.",
-    "program": [
-      {"stage":"قبل الزراعة / أساس (بأساس التحضير)","products":["سماد بلدي/كمبوست","سوبر فوسفات (فسفور)"],"note":"إضافة مادة عضوية + فسفور لتأسيس الجذور."},
-      {"stage":"مرحلة النمو المبكر (بعد 2-3 أسابيع)","products":["يوريا (46% N) أو نترات أمونيوم"],"note":"جرعات مقسّمة للنيتروجين."},
-      {"stage":"قبل الإزهار","products":["يوريا أو نترات أمونيوم","ماغنسيوم سلفات (Epsom) إذا لزم"] ,"note":"دعم التفريخ وتحسين الكتلة الخضرية."},
-      {"stage":"مرحلة التكوين","products":["سلفات بوتاسيوم أو MOP (KCl)"],"note":"تحسين جودة الحبوب وقابليتها للتخزين."}
-    ]
-  },
-  "ذرة": {
-    "summary":"ذرة تحتاج نيتروجين كافٍ وتقسيم الجرعات.",
-    "program":[
-      {"stage":"أساس عند الزراعة","products":["فوسفات ثلاثي أو سوبر فوسفات","سماد بلدي"],"note":"تحسين الجذور."},
-      {"stage":"أول تسميد N (بعد 2-3 أسابيع)","products":["يوريا أو نترات أمونيوم"],"note":"تقسيم جرعات النيتروجين."},
-      {"stage":"مرحلة الملء","products":["بوتاسيوم (MOP)","سلفات المغنيسيوم إذا لزم"],"note":"تحسين حجم الحبوب ومحتوى النشاء."}
-    ]
-  },
-  "بطاطس": {
-    "summary":"بطاطس تتطلب بوتاسيوم جيد وتأمين ماء كافٍ.",
-    "program":[
-      {"stage":"قبل الزراعة","products":["سماد بلدي/كمبوست","فوسفور (سوبر فوسفات)"],"note":"تأسيس جيد للجذور."},
-      {"stage":"تزهير وعقد","products":["يوريا مقسمة","بوتاسيوم (MOP أو K2SO4)"],"note":"بوتاسيوم مهم لحجم الدرنات."},
-      {"stage":"قبل الحصاد بفترة قصيرة","products":["تقليل النيتروجين"],"note":"تقليل النيتروجين قبل الحصاد لتحسين التخزين."}
-    ]
-  },
-  "فراولة": {
-    "summary":"فراولة حساسة للتربة وبتحتاج تسميد ورقي ومتوازن.",
-    "program":[
-      {"stage":"أساس","products":["كمبوست+سماد بلدي","فسفور أساسي"],"note":"تأسيس جيد للشتلات."},
-      {"stage":"نمو الأوراق والازهار","products":["NPK 20-20-20 (رش)","تسميد ورقي مع عناصر صغرى"],"note":"دعم الإزهار وتكوين الثمار."},
-      {"stage":"مرحلة التكوين","products":["بوتاسيوم سلفات","مغنيسيوم إذا لزم"],"note":"تحسين صلابة الثمار واللون."}
-    ]
-  },
-  "بطيخ": {
-    "summary":"بطيخ يحتاج فوسفور مبكر وبوتاسيوم قبل نضج الثمار.",
-    "program":[
-      {"stage":"أساس","products":["فوسفات","سماد بلدي"],"note":"تأسيس جذري."},
-      {"stage":"تكوين الثمار","products":["بوتاسيوم (MOP)","نيتروجين معتدل"],"note":"زيادة السكر وجودة الثمار."}
-    ]
-  },
-  "شمام": {"summary":"شمام", "program":[{"stage":"أساس","products":["فوسفور"],"note":"تأسيس جذور"},{"stage":"نضج","products":["بوتاسيوم"],"note":"تحسين النكهة"}]},
-  "مانجو": {"summary":"مانجو", "program":[{"stage":"قبل التزهير","products":["تسميد متوازن NPK"],"note":"تحفيز الإزهار"},{"stage":"بعد الحصاد","products":["تغذية تعافي (N وK)"],"note":"استعادة مخزون النبات"}]},
-  "موالح": {"summary":"موالح", "program":[{"stage":"بعد العقد","products":["نيتروجين متوازن"],"note":"دعم النمو"},{"stage":"قبل التسويق","products":["بوتاسيوم"],"note":"تحسين الجودة"}]},
-  "طماطم": {"summary":"طماطم", "program":[{"stage":"أساس","products":["فوسفور"],"note":"تأسيس جذور"},{"stage":"عقد وملء","products":["بوتاسيوم","تسميد متوازن"]}]},
-  "فلفل": {"summary":"فلفل", "program":[{"stage":"أساس","products":["فوسفور"],"note":"تأسيس"},{"stage":"تكوين الثمار","products":["بوتاسيوم"]}]},
-  "فاصوليا خضراء": {"summary":"فاصوليا خضراء", "program":[{"stage":"أساس","products":["فوسفور"],"note":"تسهيل التزهير"}]},
-  "فول سوداني": {"summary":"فول سوداني", "program":[{"stage":"أساس","products":["فوسفور"],"note":"تأسيس جذور"}]}
-};
-
-// irrigation guidance content (general)
-const irrigationGuidance = `
-1) طرق الري: الري بالتنقيط هو الأفضل لمعظم المزروعات الحساسة لأنه يقلل الفاقد ويوفر مياه أكثر للنبات. الري بالغمر أو الرش ممكن في محاصيل أخرى لكن يحتاج تحكم أكثر.
-2) التواتر: خفف الري في بداية النمو (أسابيع التأسيس) مع الحفاظ على رطوبة متوازنة، زود الري في فترات النمو السريع والتزهير والاكتمال.
-3) كميّة المياه: تعتمد على نوع التربة - التربة الرملية تحتاج تكرار أعلى حسب عمق الجذور، الطميية والحصوية تحتفظ بالماء أطول.
-4) إرشادات عملية:
-- استخدم مؤشرات الرطوبة أو "مقياس الجفاف" إن أمكن.
-- لا تترك التربة مشبعة بالماء لفترات طويلة لتجنب تعفن الجذور.
-- لا تسمح بتعطيش النبات في مراحل عقد الثمار أو التزهير.
-`;
-
-// nutrients functions and deficiency signals
-const nutrients = [
-  {"name":"النيتروجين (N)","function":"مسؤول عن النمو الخضري، لون الأوراق، إنتاج البروتين.", "def":"اصفرار عام خاصة في الأوراق القديمة، تباطؤ النمو."},
-  {"name":"الفوسفور (P)","function":"دعم نمو الجذور، الإزهار والإنضاج.", "def":"تأخر النمو، ضعف الجذور، أحيانًا تلون أرجواني."},
-  {"name":"البوتاسيوم (K)","function":"تحسين جودة الثمار ومقاومة المرض.", "def":"حواف الأوراق تحترق، ضعف في جودة الثمار."},
-  {"name":"الكالسيوم (Ca)","function":"بناء الخلايا ونمو الجذور والثمار.", "def":"تشوه الثمار وتعفن أطراف الثمار."},
-  {"name":"المغنيسيوم (Mg)","function":"جزء من الكلوروفيل، مهم لصحة الأوراق.", "def":"اصفرار بين العروق بينما تظل العروق خضراء."},
-  {"name":"الزنك (Zn)","function":"تكوين الإنزيمات ونمو البراعم.", "def":"صغر الأوراق وقصر المسافات بين العقد."},
-  {"name":"البورون (B)","function":"نقل السكر وتكوين الأنسجة الجديدة.", "def":"موت أو تشوه النقاط النامية الجديدة."},
-  {"name":"الحديد (Fe)","function":"جزء من الكلوروفيل ومهم لعملية التمثيل الضوئي.", "def":"اصفرار بين العروق في الأوراق الصغيرة."},
-  {"name":"المنجنيز (Mn)","function":"مشاركة في التمثيل الضوئي وتنشيط الإنزيمات.", "def":"اصفرار بين العروق ومناطق بنية صغيرة."}
-];
-
-// Populate crop lists
-const cropSelect = document.getElementById('cropFert');
-Object.keys(fertData).forEach(c=>{
-  const opt = document.createElement('option');
-  opt.value = c; opt.textContent = c;
-  cropSelect.appendChild(opt);
-});
-
-function showFertProgram(){
-  const crop = cropSelect.value;
-  const container = document.getElementById('fertProgram');
-  const info = fertData[crop];
-  if(!info){ container.innerHTML = '<div class="small">لا يوجد برنامج مفصل لهذا المحصول بعد.</div>'; return; }
-  let html = `<h4>${crop} — ${info.summary || ''}</h4>`;
-  html += '<table><tr><th>المرحلة</th><th>المنتجات المقترحة</th><th>ملاحظات</th></tr>';
-  info.program.forEach(p=>{
-    html += `<tr><td>${p.stage}</td><td>${p.products.join(', ')}</td><td>${p.note || ''}</td></tr>`;
-  });
-  html += '</table>';
-  html += `<p class="small">ملاحظة: الأسماء أعلاه (يوريا، MOP، سلفات مغنيسيوم، سوبر فوسفات، NPK) هي أسماء تجارية/قياسية للمواد المركبة. لتحديد الجرعات الدقيقة استند إلى تحليل التربة وحجم الحقل.</p>`;
-  container.innerHTML = html;
-}
-
-// irrigation content render
-document.getElementById('irrigationContent').innerText = irrigationGuidance;
-
-// nutrients render
-let nutHtml = '<table><tr><th>العنصر</th><th>وظيفة</th><th>أعراض النقص</th></tr>';
-nutrients.forEach(n=>{
-  nutHtml += `<tr><td>${n.name}</td><td>${n.function}</td><td>${n.def}</td></tr>`;
-});
-nutHtml += '</table>';
-document.getElementById('nutrientsContent').innerHTML = nutHtml;
-
-// quick examples
-document.getElementById('quickExamples').innerText = `مثال سريع (غير نهائي):
-- قمح: قبل الزراعة (كمبوست + سوبر فوسفات)، بعد 30 يوم (يوريا - جرعات مقسمة)، قبل الإزهار (بوتاسيوم).
-- بطاطس: أساس (كمبوست + فسفور)، أثناء التزهير (يوريا مقسمة)، قبل الحصاد تقليل النيتروجين.
-- فراولة: تسميد ورقي NPK خفيف أثناء تكوين الثمار، بوتاسيوم في مرحلة النضج.`;
-
-// navigation
-function showSection(id){
-  document.querySelectorAll('.section').forEach(s=>s.style.display='none');
-  document.getElementById(id).style.display = 'block';
-  window.scrollTo(0,0);
-}
-
-showSection('home');
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
