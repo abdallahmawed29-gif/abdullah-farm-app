@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Abdullah Farm App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Abdullah Farm App</h1>
+    <p>مع تحياتى: م. عبدالله - 01026355724</p>
+  </header>
+
+  <main>
+    <section id="intro">
+      <h2>مرحباً بك</h2>
+      <p>اختر المحصول وأدخل عمر النبات للحصول على برامج الري والتسميد والإرشادات.</p>
+      <label for="crop">اختر المحصول:</label>
+      <select id="crop"></select>
+      <label for="age">عمر النبات (بالأيام):</label>
+      <input type="number" id="age" min="1" max="365">
+      <button onclick="showProgram()">اعرض البرنامج</button>
+    </section>
+
+    <section id="programs" style="display:none;">
+      <h2>البرنامج</h2>
+      <div id="fertilization"></div>
+      <div id="irrigation"></div>
+    </section>
+
+    <section id="diagnosis">
+      <h2>تشخيص الأمراض</h2>
+      <input type="file" accept="image/*">
+      <p>سيتم إضافة خاصية التشخيص بالذكاء الاصطناعي هنا.</p>
+    </section>
+
+    <section id="guidelines">
+      <h2>الإرشادات العامة</h2>
+      <ul>
+        <li>تحاليل التربة: مهمة لتحديد الاحتياجات.</li>
+        <li>وظائف العناصر: النيتروجين للنمو الخضري، الفسفور للجذور، البوتاسيوم للجودة.</li>
+        <li>نقص العناصر: اصفرار الأوراق يعني نقص نيتروجين، حواف محترقة نقص بوتاسيوم.</li>
+        <li>المنتجات العضوية: آمنة وفعالة لتحسين التربة.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
