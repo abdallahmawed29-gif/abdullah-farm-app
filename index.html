@@ -1,49 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>Abdullah Farm App</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Abdullah Farm App — النسخة الكاملة</title>
   <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#2E7D32">
 </head>
 <body>
-  <header>
-    <h1>Abdullah Farm App</h1>
-    <p>مع تحياتى: م. عبدالله - 01026355724</p>
-  </header>
+  <div class="container">
+    <main class="main">
+      <header>
+        <h1>Abdullah Farm App — النسخة الكاملة</h1>
+        <p class="lead">اختَر المحصول وأدخل عمر النبات (باليوم) لعرض برنامج التسميد والري والتشخيص المفصّل.</p>
+      </header>
 
-  <main>
-    <section id="intro">
-      <h2>مرحباً بك</h2>
-      <p>اختر المحصول وأدخل عمر النبات للحصول على برامج الري والتسميد والإرشادات.</p>
-      <label for="crop">اختر المحصول:</label>
-      <select id="crop"></select>
-      <label for="age">عمر النبات (بالأيام):</label>
-      <input type="number" id="age" min="1" max="365">
-      <button onclick="showProgram()">اعرض البرنامج</button>
-    </section>
+      <section class="controls card">
+        <label>اختر المحصول:</label>
+        <select id="cropSelect"></select>
 
-    <section id="programs" style="display:none;">
-      <h2>البرنامج</h2>
-      <div id="fertilization"></div>
-      <div id="irrigation"></div>
-    </section>
+        <div class="row">
+          <div class="col">
+            <label>عمر النبات (يوم):</label>
+            <input type="number" id="ageInput" placeholder="مثال: 20" />
+          </div>
+          <div class="col shrink">
+            <button id="showBtn" class="btn">اعرض الخطة</button>
+          </div>
+        </div>
+      </section>
 
-    <section id="diagnosis">
-      <h2>تشخيص الأمراض</h2>
-      <input type="file" accept="image/*">
-      <p>سيتم إضافة خاصية التشخيص بالذكاء الاصطناعي هنا.</p>
-    </section>
+      <section id="resultArea">
+        <div id="programSection" class="card">
+          <h2>برنامج التسميد (تفصيلي)</h2>
+          <div id="programContent">اختر محصولًا وأدخل العمر ثم اضغط "اعرض الخطة".</div>
+        </div>
 
-    <section id="guidelines">
-      <h2>الإرشادات العامة</h2>
-      <ul>
-        <li>تحاليل التربة: مهمة لتحديد الاحتياجات.</li>
-        <li>وظائف العناصر: النيتروجين للنمو الخضري، الفسفور للجذور، البوتاسيوم للجودة.</li>
-        <li>نقص العناصر: اصفرار الأوراق يعني نقص نيتروجين، حواف محترقة نقص بوتاسيوم.</li>
-        <li>المنتجات العضوية: آمنة وفعالة لتحسين التربة.</li>
-      </ul>
-    </section>
-  </main>
+        <div id="irrigationSection" class="card">
+          <h2>برنامج الري (تفصيلي)</h2>
+          <div id="irrigationContent">سيظهر هنا جدول الري حسب العمر ونوع التربة.</div>
+        </div>
+
+        <div id="diagnosisSection" class="card">
+          <h2>تشخيص أمراض (رفع صورة)</h2>
+          <p class="small">صوِّر الجزء المتأثر واضغط رفع، ثم اختَر الأعراض لعرض تشخيص مبدئي.</p>
+          <input type="file" id="imgFile" accept="image/*">
+          <img id="preview" src="" alt="" style="display:none;max-width:100%;margin-top:8px;border-radius:6px;">
+          <div id="symptomsArea" style="display:none;">
+            <div class="small">اختَر الأعراض الظاهرة:</div>
+            <div id="symptomsList" class="tags"></div>
+            <button id="diagBtn" class="btn">أجرِ التشخيص</button>
+          </div>
+          <div id="diagnosisResult" style="margin-top:10px;"></div>
+        </div>
+
+        <div id="deficiencySection" class="card">
+          <h2>أعراض نقص العناصر</h2>
+          <div id="deficiencyContent"></div>
+        </div>
+
+      </section>
+
+      <section id="guidelines" class="card">
+        <h2>الإرشادات العامة (أسفل الصفحة)</h2>
+        <div id="guidelinesContent"></div>
+      </section>
+
+      <footer class="footer">
+        <div>مع تحياتي — م. عبدالله</div>
+        <div>01026355724</div>
+      </footer>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
