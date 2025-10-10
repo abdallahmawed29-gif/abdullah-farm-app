@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Abdullah Farm App — النسخة الكاملة</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#2E7D32">
+</head>
+<body>
+  <div class="container">
+    <main class="main">
+      <header>
+        <h1>Abdullah Farm App — النسخة الكاملة</h1>
+        <p class="lead">اختَر المحصول وأدخل عمر النبات (باليوم) لعرض برنامج التسميد والري والتشخيص المفصّل.</p>
+      </header>
+
+      <section class="controls card">
+        <label>اختر المحصول:</label>
+        <select id="cropSelect"></select>
+
+        <div class="row">
+          <div class="col">
+            <label>عمر النبات (يوم):</label>
+            <input type="number" id="ageInput" placeholder="مثال: 20" />
+          </div>
+          <div class="col shrink">
+            <button id="showBtn" class="btn">اعرض الخطة</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="resultArea">
+        <div id="programSection" class="card">
+          <h2>برنامج التسميد (تفصيلي)</h2>
+          <div id="programContent">اختر محصولًا وأدخل العمر ثم اضغط "اعرض الخطة".</div>
+        </div>
+
+        <div id="irrigationSection" class="card">
+          <h2>برنامج الري (تفصيلي)</h2>
+          <div id="irrigationContent">سيظهر هنا جدول الري حسب العمر ونوع التربة.</div>
+        </div>
+
+        <div id="diagnosisSection" class="card">
+          <h2>تشخيص أمراض (رفع صورة)</h2>
+          <p class="small">صوِّر الجزء المتأثر واضغط رفع، ثم اختَر الأعراض لعرض تشخيص مبدئي.</p>
+          <input type="file" id="imgFile" accept="image/*">
+          <img id="preview" src="" alt="" style="display:none;max-width:100%;margin-top:8px;border-radius:6px;">
+          <div id="symptomsArea" style="display:none;">
+            <div class="small">اختَر الأعراض الظاهرة:</div>
+            <div id="symptomsList" class="tags"></div>
+            <button id="diagBtn" class="btn">أجرِ التشخيص</button>
+          </div>
+          <div id="diagnosisResult" style="margin-top:10px;"></div>
+        </div>
+
+        <div id="deficiencySection" class="card">
+          <h2>أعراض نقص العناصر</h2>
+          <div id="deficiencyContent"></div>
+        </div>
+
+      </section>
+
+      <section id="guidelines" class="card">
+        <h2>الإرشادات العامة (أسفل الصفحة)</h2>
+        <div id="guidelinesContent"></div>
+      </section>
+
+      <footer class="footer">
+        <div>مع تحياتي — م. عبدالله</div>
+        <div>01026355724</div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
